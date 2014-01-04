@@ -15,5 +15,7 @@ namespace NETPolynomial
 
         public const Double MinimumIndeterminateDegree = -100.0;
         public const Double MaximumIndeterminateDegree = 100.0;
+
+        public const Int32 MaximumNumberOfTerms = 100;
     }
 }

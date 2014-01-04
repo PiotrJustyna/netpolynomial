@@ -271,6 +271,41 @@ namespace NETPolynomial.Tests
         }
 
         [TestMethod]
+        public void AddTerm_WhenAddingTooManyTermsWithCoefficients_ShouldThrowAnArgumentOutOfRangeException()
+        {
+            try
+            {
+                // arrange
+                NETPolynomial.Polynomial testedPolynomial = new NETPolynomial.Polynomial(
+                    new String[] { "x" }
+                    , new String[] { "a" });
+
+                for (Int32 i = 0; i < Consts.MaximumNumberOfTerms; i++)
+                {
+                    testedPolynomial.AddTerm(
+                        "a"
+                        , new Dictionary<string, double>() { { "x", 1.0 } });
+                }
+
+                // act
+                testedPolynomial.AddTerm(
+                    "a"
+                    , new Dictionary<string, double>() { { "x", 1.0 } });
+            }
+            catch (Exception exception)
+            {
+                // assert
+                Assert.IsTrue(exception.Message.Contains(String.Format("Limit of terms is reached, could not add new term. Current limit: {0}", Consts.MaximumNumberOfTerms)));
+                Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
+
+                return;
+            }
+
+            // assert
+            Assert.Fail("Expected an exception to be thrown.");
+        }
+
+        [TestMethod]
         public void AddTerm_WhenAddingTermWithInvalidCoefficientName_ShouldThrowAnArgumentOutOfRangeException()
         {
             try
@@ -365,6 +400,37 @@ namespace NETPolynomial.Tests
             {
                 // assert
                 Assert.IsTrue(exception.Message.Contains("Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of"));
+                Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
+
+                return;
+            }
+
+            // assert
+            Assert.Fail("Expected an exception to be thrown.");
+        }
+
+        [TestMethod]
+        public void AddTerm_WhenAddingTooManyTermsWithoutCoefficients_ShouldThrowAnArgumentOutOfRangeException()
+        {
+            try
+            {
+                // arrange
+                NETPolynomial.Polynomial testedPolynomial = new NETPolynomial.Polynomial(
+                    new String[] { "x" }
+                    , null);
+
+                for (Int32 i = 0; i < Consts.MaximumNumberOfTerms; i++)
+                {
+                    testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", 1.0 } });
+                }
+
+                // act
+                testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", 1.0 } });
+            }
+            catch (Exception exception)
+            {
+                // assert
+                Assert.IsTrue(exception.Message.Contains(String.Format("Limit of terms is reached, could not add new term. Current limit: {0}", Consts.MaximumNumberOfTerms)));
                 Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
 
                 return;

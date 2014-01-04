@@ -144,38 +144,46 @@ namespace NETPolynomial
         /// - no coefficients declared using "coefficientName" key
         /// - no indeterminates declared using one of "indeterminatesWithDegrees" keys
         /// - indeterminate degrees not in range
+        /// - limit of terms reached
         /// </exception>
         public void AddTerm(
             String coefficientName
             , Dictionary<String, Double> indeterminatesWithDegrees)
         {
-            if (CheckIfCoefficientIsDeclared(coefficientName))
+            if (_terms.Count < Consts.MaximumNumberOfTerms)
             {
-                if (CheckIfCollectionOfIndeterminatesIsEmpty(indeterminatesWithDegrees))
+                if (CheckIfCoefficientIsDeclared(coefficientName))
                 {
-                    _terms.Add(new Term(coefficientName, new Dictionary<String, Double>()));
-                }
-                else
-                {
-                    if (CheckIfCollectionOfIndeterminatesIsCorrect(indeterminatesWithDegrees))
+                    if (CheckIfCollectionOfIndeterminatesIsEmpty(indeterminatesWithDegrees))
                     {
-                        _terms.Add(new Term(coefficientName, CopyProvidedIndeterminates(indeterminatesWithDegrees)));
+                        _terms.Add(new Term(coefficientName, new Dictionary<String, Double>()));
                     }
                     else
                     {
-                        throw new ArgumentOutOfRangeException(
-                            String.Format(
-                            "Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of {0:F2} : {1:F2}."
-                            , Consts.MinimumIndeterminateDegree
-                            , Consts.MaximumIndeterminateDegree));
+                        if (CheckIfCollectionOfIndeterminatesIsCorrect(indeterminatesWithDegrees))
+                        {
+                            _terms.Add(new Term(coefficientName, CopyProvidedIndeterminates(indeterminatesWithDegrees)));
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException(
+                                String.Format(
+                                "Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of {0:F2} : {1:F2}."
+                                , Consts.MinimumIndeterminateDegree
+                                , Consts.MaximumIndeterminateDegree));
+                        }
                     }
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(String.Format(
+                        "Coefficient could not be found. Please make sure it was declared. Coefficient name: \"{0}\"."
+                        , coefficientName));
                 }
             }
             else
             {
-                throw new ArgumentOutOfRangeException(String.Format(
-                    "Coefficient could not be found. Please make sure it was declared. Coefficient name: \"{0}\"."
-                    , coefficientName));
+                throw new ArgumentOutOfRangeException(String.Format("Limit of terms is reached, could not add new term. Current limit: {0}", Consts.MaximumNumberOfTerms));
             }
         }
 
@@ -191,28 +199,36 @@ namespace NETPolynomial
         /// Thrown when:
         /// - no indeterminates declared using one of "indeterminatesWithDegrees" keys
         /// - indeterminate degrees not in range
+        /// - limit of terms reached
         /// </exception>
         public void AddTerm(Dictionary<String, Double> indeterminatesWithDegrees)
         {
-            if (CheckIfCollectionOfIndeterminatesIsEmpty(indeterminatesWithDegrees))
+            if (_terms.Count < Consts.MaximumNumberOfTerms)
             {
-                throw new ArgumentException(
-                    "Collection of indeterminates is empty, which makes the term invalid since the coefficient is not used.");
-            }
-            else
-            {
-                if (CheckIfCollectionOfIndeterminatesIsCorrect(indeterminatesWithDegrees))
+                if (CheckIfCollectionOfIndeterminatesIsEmpty(indeterminatesWithDegrees))
                 {
-                    _terms.Add(new Term(CopyProvidedIndeterminates(indeterminatesWithDegrees)));
+                    throw new ArgumentException(
+                        "Collection of indeterminates is empty, which makes the term invalid since the coefficient is not used.");
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException(
-                        String.Format(
-                        "Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of {0:F2} : {1:F2}."
-                        , Consts.MinimumIndeterminateDegree
-                        , Consts.MaximumIndeterminateDegree));
+                    if (CheckIfCollectionOfIndeterminatesIsCorrect(indeterminatesWithDegrees))
+                    {
+                        _terms.Add(new Term(CopyProvidedIndeterminates(indeterminatesWithDegrees)));
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            String.Format(
+                            "Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of {0:F2} : {1:F2}."
+                            , Consts.MinimumIndeterminateDegree
+                            , Consts.MaximumIndeterminateDegree));
+                    }
                 }
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(String.Format("Limit of terms is reached, could not add new term. Current limit: {0}", Consts.MaximumNumberOfTerms));
             }
         }
 
@@ -242,10 +258,20 @@ namespace NETPolynomial
 
                 foreach (KeyValuePair<String, Double> inspectedIndeterminate in sortedIndeterminates)
                 {
-                    polynomialBuilder.AppendFormat(
-                        "* {0}^{1:F2} "
-                        , inspectedIndeterminate.Key
-                        , inspectedIndeterminate.Value);
+                    if (inspectedTerm.CoefficientName == null)
+                    {
+                        polynomialBuilder.AppendFormat(
+                            "{0}^{1:F2} "
+                            , inspectedIndeterminate.Key
+                            , inspectedIndeterminate.Value);
+                    }
+                    else
+                    {
+                        polynomialBuilder.AppendFormat(
+                            "* {0}^{1:F2} "
+                            , inspectedIndeterminate.Key
+                            , inspectedIndeterminate.Value);
+                    }
                 }
             }
 

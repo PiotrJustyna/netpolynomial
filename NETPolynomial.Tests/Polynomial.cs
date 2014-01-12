@@ -6,26 +6,26 @@ using System.Text;
 namespace NETPolynomial.Tests
 {
     [TestClass]
-    public class Polynomial : TestBase
+    public partial class Polynomial : TestBase
     {
         [TestMethod]
         public void ConstructPolynomial_WhenConstructingPolynomialWithoutCoefficientsAndIndeterminates_ShouldThrowAnArgumentException()
         {
-            try 
-	        {
+            try
+            {
                 // act
                 NETPolynomial.Polynomial testedPolynomial = new NETPolynomial.Polynomial(
                     null
                     , null);
-	        }
-	        catch (Exception exception)
-	        {
+            }
+            catch (Exception exception)
+            {
                 // assert
                 Assert.IsTrue(exception.Message.Contains("No indeterminates or coefficients provided."));
                 Assert.AreEqual(exception.GetType(), typeof(ArgumentException), "Expected \"ArgumentException\" exception.");
 
                 return;
-	        }
+            }
 
             // assert
             Assert.Fail("Expected an exception to be thrown.");
@@ -316,7 +316,33 @@ namespace NETPolynomial.Tests
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm("b", null);
+                testedPolynomial.AddTerm("b");
+            }
+            catch (Exception exception)
+            {
+                // assert
+                Assert.IsTrue(exception.Message.Contains("Coefficient could not be found. Please make sure it was declared. Coefficient name:"));
+                Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
+
+                return;
+            }
+
+            // assert
+            Assert.Fail("Expected an exception to be thrown.");
+        }
+
+        [TestMethod]
+        public void AddTerm_WhenAddingTermWithoutCoefficientName_ShouldThrowAnArgumentOutOfRangeException()
+        {
+            try
+            {
+                // arrange
+                NETPolynomial.Polynomial testedPolynomial = new NETPolynomial.Polynomial(
+                    new String[] { "x" }
+                    , new String[] { "a" });
+
+                // act
+                testedPolynomial.AddTerm((String)null);
             }
             catch (Exception exception)
             {
@@ -451,7 +477,7 @@ namespace NETPolynomial.Tests
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm(null);
+                testedPolynomial.AddTerm((Dictionary<String, Double>)null);
             }
             catch (Exception exception)
             {

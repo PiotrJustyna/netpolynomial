@@ -31,6 +31,15 @@ namespace NETPolynomial
                 null
                 , indeterminatesWithDegrees) { }
 
+        /// <summary>
+        /// Constructor accepting only a coefficient name. Used for constant terms.
+        /// </summary>
+        /// <param name="coefficientName">Name of the term's coefficient.</param>
+        internal Term(String coefficientName)
+            : this(
+                coefficientName
+                , null) { }
+
         internal String CoefficientName { get; private set; }
 
         internal Dictionary<String, Double> IndeterminatesWithDegrees { get; private set; }

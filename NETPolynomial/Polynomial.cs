@@ -188,6 +188,36 @@ namespace NETPolynomial
         }
 
         /// <summary>
+        /// Adds a constant term to the polynomial.
+        /// </summary>
+        /// <param name="coefficientName">Name of the coefficient to form the term.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when:
+        /// - no coefficients declared using "coefficientName" key
+        /// - limit of terms reached
+        /// </exception>
+        public void AddTerm(String coefficientName)
+        {
+            if (_terms.Count < Consts.MaximumNumberOfTerms)
+            {
+                if (CheckIfCoefficientIsDeclared(coefficientName))
+                {
+                    _terms.Add(new Term(coefficientName));
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(String.Format(
+                        "Coefficient could not be found. Please make sure it was declared. Coefficient name: \"{0}\"."
+                        , coefficientName));
+                }
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(String.Format("Limit of terms is reached, could not add new term. Current limit: {0}", Consts.MaximumNumberOfTerms));
+            }
+        }
+
+        /// <summary>
         /// Adds a term without a coefficient to the polynomial.
         /// </summary>
         /// <param name="indeterminatesWithDegrees">Collection of indeterminates and their degrees to be included in the term.</param>

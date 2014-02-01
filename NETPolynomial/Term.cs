@@ -7,7 +7,7 @@ namespace NETPolynomial
     /// <summary>
     /// Represents the polynomial's term.
     /// </summary>
-    internal class Term
+    internal sealed class Term
     {
         /// <summary>
         /// Constructor accepting term's coefficient name and a collection of indeterminates with their degrees.

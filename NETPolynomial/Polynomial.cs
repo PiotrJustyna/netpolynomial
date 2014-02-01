@@ -8,7 +8,7 @@ namespace NETPolynomial
     /// <summary>
     /// Represents the polynomial.
     /// </summary>
-    public class Polynomial
+    public sealed class Polynomial
     {
         private readonly Dictionary<String, Double> _indeterminates = null;
         private readonly Dictionary<String, Double> _coefficients = null;

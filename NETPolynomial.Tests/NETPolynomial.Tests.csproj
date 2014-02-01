@@ -50,7 +50,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Polynomial.cs" />
+    <Compile Include="TestPolynomial\AddTerm.cs" />
+    <Compile Include="TestPolynomial\ConstructPolynomial.cs" />
+    <Compile Include="TestPolynomial\GetValue.cs" />
+    <Compile Include="TestPolynomial\SetCoefficientValue.cs" />
+    <Compile Include="TestPolynomial\SetIndeterminateValue.cs" />
+    <Compile Include="TestPolynomial\ToString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

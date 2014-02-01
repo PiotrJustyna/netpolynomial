@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Piotr Justyna")]
 [assembly: AssemblyProduct("NETPolynomial")]
-[assembly: AssemblyCopyright("Copyright © Piotr Justyna 2013")]
+[assembly: AssemblyCopyright("Copyright © Piotr Justyna 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

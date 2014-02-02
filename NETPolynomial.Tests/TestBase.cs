@@ -9,8 +9,8 @@ namespace NETPolynomial.Tests
     [TestClass]
     public class TestBase
     {
-        [ClassInitialize]
-        public static void PrepareTests()
+        [TestInitialize]
+        public void PrepareTest()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
         }

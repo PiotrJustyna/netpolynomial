@@ -263,54 +263,6 @@ namespace NETPolynomial
         }
 
         /// <summary>
-        /// Prints the polynomial.
-        /// </summary>
-        /// <returns>String representation of the polynomial.</returns>
-        public override string ToString()
-        {
-            StringBuilder polynomialBuilder = new StringBuilder();
-            IOrderedEnumerable<Term> sortedTerms = _terms.OrderByDescending(singleTerm => singleTerm.Degree);
-
-            foreach (Term inspectedTerm in sortedTerms)
-            {
-                if (inspectedTerm == sortedTerms.First())
-                {
-                    polynomialBuilder.AppendFormat("{0} ", inspectedTerm.CoefficientName);
-                }
-                else
-                {
-                    polynomialBuilder.AppendFormat("+ {0} ", inspectedTerm.CoefficientName);
-                }
-
-                IOrderedEnumerable<KeyValuePair<String, Double>> sortedIndeterminates = inspectedTerm
-                    .IndeterminatesWithDegrees
-                    .OrderByDescending(singleIndeterminateWithDegree => singleIndeterminateWithDegree.Value);
-
-                foreach (KeyValuePair<String, Double> inspectedIndeterminate in sortedIndeterminates)
-                {
-                    if (inspectedTerm.CoefficientName == null)
-                    {
-                        polynomialBuilder.AppendFormat(
-                            "{0}^{1:F2} "
-                            , inspectedIndeterminate.Key
-                            , inspectedIndeterminate.Value);
-                    }
-                    else
-                    {
-                        polynomialBuilder.AppendFormat(
-                            "* {0}^{1:F2} "
-                            , inspectedIndeterminate.Key
-                            , inspectedIndeterminate.Value);
-                    }
-                }
-            }
-
-            polynomialBuilder.Remove(polynomialBuilder.Length - 1, 1);  // Last space.
-
-            return polynomialBuilder.ToString();
-        }
-
-        /// <summary>
         /// Calculates current polynomial's value.
         /// </summary>
         /// <returns>Current polynomial's value.</returns>
@@ -345,6 +297,151 @@ namespace NETPolynomial
             return result;
         }
 
+        /// <summary>
+        /// Creates a deep copy of the polynomial.
+        /// </summary>
+        /// <returns>
+        /// Deep copy of the polynomial.
+        /// </returns>
+        public Polynomial Copy()
+        {
+            Polynomial deepCopy = new Polynomial(
+                _indeterminates.Select(singleIndeterminate => singleIndeterminate.Key).ToArray()
+                , _coefficients.Select(singleCoefficient => singleCoefficient.Key).ToArray());
+
+            // Copying the structure of the polynomial.
+            foreach (Term singleTerm in _terms)
+            {
+                if (singleTerm.CoefficientName == null)
+                {
+                    deepCopy.AddTerm(CopyProvidedIndeterminates(singleTerm.IndeterminatesWithDegrees));
+                }
+                else if(singleTerm.IndeterminatesWithDegrees == null)
+                {
+                    deepCopy.AddTerm(singleTerm.CoefficientName);
+                }
+                else
+                {
+                    deepCopy.AddTerm(
+                        singleTerm.CoefficientName
+                        , CopyProvidedIndeterminates(singleTerm.IndeterminatesWithDegrees));
+                }
+            }
+
+            // Copying the values of indeterminates.
+            foreach (KeyValuePair<String, Double> singleIndeterminate in _indeterminates)
+            {
+                deepCopy.SetIndeterminateValue(singleIndeterminate.Key, singleIndeterminate.Value);
+            }
+
+            // Copying the values of coefficients.
+            foreach (KeyValuePair<String, Double> singleCoefficient in _coefficients)
+            {
+                deepCopy.SetCoefficientValue(singleCoefficient.Key, singleCoefficient.Value);
+            }
+
+            return deepCopy;
+        }
+
+        /// <summary>
+        /// Prints the polynomial.
+        /// </summary>
+        /// <returns>String representation of the polynomial.</returns>
+        public override String ToString()
+        {
+            StringBuilder polynomialBuilder = new StringBuilder();
+            IOrderedEnumerable<Term> sortedTerms = _terms.OrderByDescending(singleTerm => singleTerm.Degree);
+
+            foreach (Term inspectedTerm in sortedTerms)
+            {
+                if (inspectedTerm == sortedTerms.First())
+                {
+                    polynomialBuilder.AppendFormat("{0} ", inspectedTerm.CoefficientName);
+                }
+                else
+                {
+                    polynomialBuilder.AppendFormat("+ {0} ", inspectedTerm.CoefficientName);
+                }
+
+                if (inspectedTerm.IndeterminatesWithDegrees != null)
+                {
+                    IOrderedEnumerable<KeyValuePair<String, Double>> sortedIndeterminates = inspectedTerm
+                        .IndeterminatesWithDegrees
+                        .OrderByDescending(singleIndeterminateWithDegree => singleIndeterminateWithDegree.Value);
+
+                    foreach (KeyValuePair<String, Double> inspectedIndeterminate in sortedIndeterminates)
+                    {
+                        if (inspectedTerm.CoefficientName == null)
+                        {
+                            polynomialBuilder.AppendFormat(
+                                "{0}^{1:F2} "
+                                , inspectedIndeterminate.Key
+                                , inspectedIndeterminate.Value);
+                        }
+                        else
+                        {
+                            polynomialBuilder.AppendFormat(
+                                "* {0}^{1:F2} "
+                                , inspectedIndeterminate.Key
+                                , inspectedIndeterminate.Value);
+                        }
+                    }
+                }
+            }
+
+            polynomialBuilder.Remove(polynomialBuilder.Length - 1, 1);  // Last space.
+
+            return polynomialBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Compares two polynomials.
+        /// </summary>
+        /// <param name="obj">Polynomial object to be compared.</param>
+        /// <returns>
+        /// True - polynomials are identical.
+        /// False - polynomials are different.
+        /// </returns>
+        public override Boolean Equals(Object obj)
+        {
+            Boolean result = false;
+
+            if (obj != null
+                && obj is Polynomial)
+            {
+                result = this.Equals(obj as Polynomial);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Compares two polynomials.
+        /// </summary>
+        /// <param name="polynomialObject">Polynomial object to be compared.</param>
+        /// <returns>
+        /// True - polynomials are identical.
+        /// False - polynomials are different.
+        /// </returns>
+        public Boolean Equals(Polynomial polynomialObject)
+        {
+            return
+                CheckIfPolynomialStructureIsTheSame(polynomialObject)
+                && CheckIfCoefficientValuesAreEqual(polynomialObject)
+                && CheckIfIndeterminateValuesAreEqual(polynomialObject);
+        }
+
+        /// <summary>
+        /// Gets object's hash code.
+        /// </summary>
+        /// <returns>
+        /// Object's hash code.
+        /// </returns>
+        public override Int32 GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         private Dictionary<String, Double> CopyProvidedIndeterminates(Dictionary<String, Double> indeterminatesWithDegrees)
         {
             Dictionary<String, Double> copy = new Dictionary<String, Double>();
@@ -355,6 +452,82 @@ namespace NETPolynomial
             }
 
             return copy;
+        }
+
+        private Boolean CheckIfPolynomialStructureIsTheSame(Polynomial polynomialObject)
+        {
+            Boolean structureComparisonResult = true;
+
+            if (polynomialObject == null)
+            {
+                structureComparisonResult = false;
+            }
+            else
+            {
+                structureComparisonResult = this.ToString() == polynomialObject.ToString();
+            }
+
+            return structureComparisonResult;
+        }
+
+        private Boolean CheckIfCoefficientValuesAreEqual(Polynomial polynomialObject)
+        {
+            Boolean coefficientsComparisonResult = true;
+
+            if (polynomialObject == null
+                || polynomialObject._coefficients == null)
+            {
+                coefficientsComparisonResult = false;
+            }
+            else
+            {
+                foreach (KeyValuePair<String, Double> singleCoefficient in polynomialObject._coefficients)
+                {
+                    coefficientsComparisonResult &= _coefficients[singleCoefficient.Key] == polynomialObject._coefficients[singleCoefficient.Key];
+
+                    if (coefficientsComparisonResult)
+                    {
+                        // continute to check next coefficient
+                    }
+                    else
+                    {
+                        // values of coefficients are different
+                        break;
+                    }
+                }
+            }
+
+            return coefficientsComparisonResult;
+        }
+
+        private Boolean CheckIfIndeterminateValuesAreEqual(Polynomial polynomialObject)
+        {
+            Boolean indeterminateComparisonResult = true;
+
+            if (polynomialObject == null
+                || polynomialObject._indeterminates == null)
+            {
+                indeterminateComparisonResult = false;
+            }
+            else
+            {
+                foreach (KeyValuePair<String, Double> singleIndeterminate in polynomialObject._indeterminates)
+                {
+                    indeterminateComparisonResult &= _indeterminates[singleIndeterminate.Key] == polynomialObject._indeterminates[singleIndeterminate.Key];
+
+                    if (indeterminateComparisonResult)
+                    {
+                        // continute to check next coefficient
+                    }
+                    else
+                    {
+                        // values of coefficients are different
+                        break;
+                    }
+                }
+            }
+
+            return indeterminateComparisonResult;
         }
 
         private Boolean CheckIfStringArrayIsEmpty(String[] strings)

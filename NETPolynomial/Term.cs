@@ -48,7 +48,14 @@ namespace NETPolynomial
         {
             get
             {
-                return IndeterminatesWithDegrees.Values.Sum(singleDegree => singleDegree);
+                Double degree = 0.0;
+
+                if(IndeterminatesWithDegrees != null)
+                {
+                    degree = IndeterminatesWithDegrees.Values.Sum(singleDegree => singleDegree);
+                }
+
+                return degree;
             }
         }
     }

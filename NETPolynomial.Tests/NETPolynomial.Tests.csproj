@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="TestPolynomial\AddTerm.cs" />
     <Compile Include="TestPolynomial\ConstructPolynomial.cs" />
+    <Compile Include="TestPolynomial\Copy.cs" />
+    <Compile Include="TestPolynomial\EqualsObject.cs" />
+    <Compile Include="TestPolynomial\EqualsPolynomial.cs" />
     <Compile Include="TestPolynomial\GetValue.cs" />
     <Compile Include="TestPolynomial\SetCoefficientValue.cs" />
     <Compile Include="TestPolynomial\SetIndeterminateValue.cs" />

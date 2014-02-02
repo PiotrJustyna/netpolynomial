@@ -110,6 +110,36 @@ namespace NETPolynomial
         }
 
         /// <summary>
+        /// Gets the value of the indeterminate identified by "indeterminateName" key.
+        /// </summary>
+        /// <param name="indeterminateName">Name of the indeterminate which value is to be returned.</param>
+        /// <returns>
+        /// Value of specified indeterminate.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when:
+        /// - no indeterminates declared using "indeterminateName" key
+        /// </exception>
+        public Double GetIndeterminateValue(
+            String indeterminateName)
+        {
+            Double result = 0.0;
+
+            if (CheckIfIndeterminateIsDeclared(indeterminateName))
+            {
+                result = _indeterminates[indeterminateName];
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(String.Format(
+                    "Indeterminate could not be found. Please make sure it was declared. Indeterminate name: \"{0}\"."
+                    , indeterminateName));
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Sets the value of the coefficient identified by "coefficientName" key.
         /// </summary>
         /// <param name="coefficientName">Name of the coefficient which value is to be set.</param>
@@ -132,6 +162,36 @@ namespace NETPolynomial
                     "Coefficient could not be found. Please make sure it was declared. Coefficient name: \"{0}\"."
                     , coefficientName));
             }
+        }
+
+        /// <summary>
+        /// Gets the value of the coefficient identified by "coefficientName" key.
+        /// </summary>
+        /// <param name="coefficientName">Name of the coefficient which value is to be returned.</param>
+        /// <returns>
+        /// Value of specified coefficient.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when:
+        /// - no coefficients declared using "coefficientName" key
+        /// </exception>
+        public Double GetCoefficientValue(
+            String coefficientName)
+        {
+            Double result = 0.0;
+
+            if (CheckIfCoefficientIsDeclared(coefficientName))
+            {
+                result = _coefficients[coefficientName];
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(String.Format(
+                    "Coefficient could not be found. Please make sure it was declared. Coefficient name: \"{0}\"."
+                    , coefficientName));
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -344,6 +404,35 @@ namespace NETPolynomial
         }
 
         /// <summary>
+        /// Copies the values of source polynomial's coefficients to the current polynomial provided that the structures (terms, coefficients and indeterminates) of both polynomials are the same.
+        /// </summary>
+        /// <param name="sourcePolynomial">
+        /// Polynomial to copy the coefficients from.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when:
+        /// - structures of source and destination polynomials are not the same
+        /// </exception>
+        public void CopyCoefficientValuesFromPolynomial(Polynomial sourcePolynomial)
+        {
+            if (CheckIfPolynomialStructuresAreTheSame(sourcePolynomial))
+            {
+                foreach (KeyValuePair<String, Double> singleCoefficient in sourcePolynomial._coefficients)
+                {
+                    this.SetCoefficientValue(singleCoefficient.Key, singleCoefficient.Value);
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    String.Format(
+                        "Structures of source destination polynomials are not the same. Please check used terms, coefficients and indeterminates. Source polynomial: {0}, Destination polynomial: {1}."
+                        , sourcePolynomial.ToString()
+                        , this.ToString()));
+            }
+        }
+
+        /// <summary>
         /// Prints the polynomial.
         /// </summary>
         /// <returns>String representation of the polynomial.</returns>
@@ -426,7 +515,7 @@ namespace NETPolynomial
         public Boolean Equals(Polynomial polynomialObject)
         {
             return
-                CheckIfPolynomialStructureIsTheSame(polynomialObject)
+                CheckIfPolynomialStructuresAreTheSame(polynomialObject)
                 && CheckIfCoefficientValuesAreEqual(polynomialObject)
                 && CheckIfIndeterminateValuesAreEqual(polynomialObject);
         }
@@ -454,7 +543,7 @@ namespace NETPolynomial
             return copy;
         }
 
-        private Boolean CheckIfPolynomialStructureIsTheSame(Polynomial polynomialObject)
+        private Boolean CheckIfPolynomialStructuresAreTheSame(Polynomial polynomialObject)
         {
             Boolean structureComparisonResult = true;
 

@@ -57,5 +57,28 @@ namespace NETPolynomial.Tests.TestPolynomial
             // assert
             Assert.Fail("Expected an exception to be thrown.");
         }
+
+        [TestMethod]
+        public void SetCoefficientValue_WhenUsingCorrectCoefficientName_ShouldSetTheValueCorrectly()
+        {
+            // arrange
+            Polynomial testedPolynomial = new Polynomial(
+                new String[] { "x" }
+                , new String[] { "a" });
+            Double testedValue = 7.0;
+
+            // act
+            testedPolynomial.SetCoefficientValue("a", testedValue);
+            Double result = testedPolynomial.GetCoefficientValue("a");
+
+            //assert
+            Assert.AreEqual(
+                testedValue
+                , result
+                , String.Format(
+                    "Tested value and result are not equal. Tested value: {0}, result: {1}"
+                    , testedValue
+                    , result));
+        }
     }
 }

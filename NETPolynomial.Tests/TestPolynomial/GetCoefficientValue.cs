@@ -1,13 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NETPolynomial.Tests.TestPolynomial
 {
     [TestClass]
-    public class SetIndeterminateValue : TestBase
+    public class GetCoefficientValue : TestBase
     {
         [TestMethod]
-        public void SetIndeterminateValue_WhenUsingNullIndeterminateName_ShouldThrowAnArgumentOutOfRangeException()
+        public void GetCoefficientValue_WhenUsingNullICoefficientName_ShouldThrowAnArgumentOutOfRangeException()
         {
             try
             {
@@ -17,12 +21,12 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.SetIndeterminateValue(null, 1.0);
+                Double result = testedPolynomial.GetCoefficientValue(null);
             }
             catch (Exception exception)
             {
                 // assert
-                Assert.IsTrue(exception.Message.Contains("Indeterminate could not be found. Please make sure it was declared. Indeterminate name:"));
+                Assert.IsTrue(exception.Message.Contains("Coefficient could not be found. Please make sure it was declared. Coefficient name:"));
                 Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
 
                 return;
@@ -33,7 +37,7 @@ namespace NETPolynomial.Tests.TestPolynomial
         }
 
         [TestMethod]
-        public void SetIndeterminateValue_WhenUsingIncorrectIndeterminateName_ShouldThrowAnArgumentOutOfRangeException()
+        public void GetCoefficientValue_WhenUsingIncorrectCoefficientName_ShouldThrowAnArgumentOutOfRangeException()
         {
             try
             {
@@ -43,12 +47,12 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.SetIndeterminateValue("y", 1.0);
+                Double result = testedPolynomial.GetCoefficientValue("b");
             }
             catch (Exception exception)
             {
                 // assert
-                Assert.IsTrue(exception.Message.Contains("Indeterminate could not be found. Please make sure it was declared. Indeterminate name:"));
+                Assert.IsTrue(exception.Message.Contains("Coefficient could not be found. Please make sure it was declared. Coefficient name:"));
                 Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
 
                 return;
@@ -59,25 +63,25 @@ namespace NETPolynomial.Tests.TestPolynomial
         }
 
         [TestMethod]
-        public void SetIndeterminateValue_WhenUsingCorrectIndeterminateName_ShouldSetTheValueCorrectly()
+        public void GetCoefficientValue_WhenUsingCorrectCoefficientName_ShouldReturnCorrectValue()
         {
             // arrange
             Polynomial testedPolynomial = new Polynomial(
                 new String[] { "x" }
                 , new String[] { "a" });
-            Double testedIndeterminateValue = 4.0;
+            Double testedValue = 7.0;
 
             // act
-            testedPolynomial.SetIndeterminateValue("x", testedIndeterminateValue);
-            Double result = testedPolynomial.GetIndeterminateValue("x");
+            testedPolynomial.SetCoefficientValue("a", testedValue);
+            Double result = testedPolynomial.GetCoefficientValue("a");
 
-            // assert
+            //assert
             Assert.AreEqual(
-                testedIndeterminateValue
+                testedValue
                 , result
                 , String.Format(
                     "Tested value and result are not equal. Tested value: {0}, result: {1}"
-                    , testedIndeterminateValue
+                    , testedValue
                     , result));
         }
     }

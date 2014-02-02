@@ -1,13 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NETPolynomial.Tests.TestPolynomial
 {
     [TestClass]
-    public class SetIndeterminateValue : TestBase
+    public class GetIndeterminateValue : TestBase
     {
         [TestMethod]
-        public void SetIndeterminateValue_WhenUsingNullIndeterminateName_ShouldThrowAnArgumentOutOfRangeException()
+        public void GetIndeterminateValue_WhenUsingNullIndeterminateName_ShouldThrowAnArgumentOutOfRangeException()
         {
             try
             {
@@ -17,7 +21,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.SetIndeterminateValue(null, 1.0);
+                Double result = testedPolynomial.GetIndeterminateValue(null);
             }
             catch (Exception exception)
             {
@@ -43,7 +47,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.SetIndeterminateValue("y", 1.0);
+                Double result = testedPolynomial.GetIndeterminateValue("y");
             }
             catch (Exception exception)
             {
@@ -59,7 +63,7 @@ namespace NETPolynomial.Tests.TestPolynomial
         }
 
         [TestMethod]
-        public void SetIndeterminateValue_WhenUsingCorrectIndeterminateName_ShouldSetTheValueCorrectly()
+        public void GetIndeterminateValue_WhenUsingCorrectIndeterminateName_ShouldGetTheCorrectValue()
         {
             // arrange
             Polynomial testedPolynomial = new Polynomial(

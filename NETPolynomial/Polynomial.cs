@@ -8,7 +8,7 @@ namespace NETPolynomial
     /// <summary>
     /// Represents the polynomial.
     /// </summary>
-    public sealed class Polynomial
+    public class Polynomial
     {
         private readonly Dictionary<String, Double> _indeterminates = null;
         private readonly Dictionary<String, Double> _coefficients = null;
@@ -201,6 +201,8 @@ namespace NETPolynomial
         /// <param name="indeterminatesWithDegrees">Collection of indeterminates and their degrees to be included in the term.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when:
+        /// - coefficient not provided
+        /// - no indeterminates provided
         /// - no coefficients declared using "coefficientName" key
         /// - no indeterminates declared using one of "indeterminatesWithDegrees" keys
         /// - indeterminate degrees not in range
@@ -216,7 +218,7 @@ namespace NETPolynomial
                 {
                     if (CheckIfCollectionOfIndeterminatesIsEmpty(indeterminatesWithDegrees))
                     {
-                        _terms.Add(new Term(coefficientName, new Dictionary<String, Double>()));
+                        throw new ArgumentOutOfRangeException("No indeterminates provided.");
                     }
                     else
                     {
@@ -376,7 +378,7 @@ namespace NETPolynomial
                 {
                     deepCopy.AddTerm(CopyProvidedIndeterminates(singleTerm.IndeterminatesWithDegrees));
                 }
-                else if(singleTerm.IndeterminatesWithDegrees == null)
+                else if(CheckIfCollectionOfIndeterminatesIsEmpty(singleTerm.IndeterminatesWithDegrees))
                 {
                     deepCopy.AddTerm(singleTerm.CoefficientName);
                 }
@@ -529,6 +531,28 @@ namespace NETPolynomial
         public override Int32 GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns names of all polynomial's coefficients.
+        /// </summary>
+        /// <returns>
+        /// Names of all polynomial's coefficients.
+        /// </returns>
+        public String[] GetAllCoefficientNames()
+        {
+            return _coefficients.Keys.ToArray();
+        }
+
+        /// <summary>
+        /// Returns names of all polynomial's indeterminates.
+        /// </summary>
+        /// <returns>
+        /// Names of all polynomial's indeterminates.
+        /// </returns>
+        public String[] GetAllIndeterminateNames()
+        {
+            return _indeterminates.Keys.ToArray();
         }
 
         private Dictionary<String, Double> CopyProvidedIndeterminates(Dictionary<String, Double> indeterminatesWithDegrees)

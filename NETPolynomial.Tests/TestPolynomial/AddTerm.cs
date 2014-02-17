@@ -21,13 +21,13 @@ namespace NETPolynomial.Tests.TestPolynomial
                 {
                     testedPolynomial.AddTerm(
                         "a"
-                        , new Dictionary<string, double>() { { "x", 1.0 } });
+                        , new Dictionary<String, Double>() { { "x", 1.0 } });
                 }
 
                 // act
                 testedPolynomial.AddTerm(
                     "a"
-                    , new Dictionary<string, double>() { { "x", 1.0 } });
+                    , new Dictionary<String, Double>() { { "x", 1.0 } });
             }
             catch (Exception exception)
             {
@@ -95,6 +95,32 @@ namespace NETPolynomial.Tests.TestPolynomial
         }
 
         [TestMethod]
+        public void AddTerm_WhenAddingTermWithValidCoefficientNameAndInvalidIndeterminate_ShouldThrowAnArgumentOutOfRangeException()
+        {
+            try
+            {
+                // arrange
+                Polynomial testedPolynomial = new Polynomial(
+                    new String[] { "x" }
+                    , new String[] { "a" });
+
+                // act
+                testedPolynomial.AddTerm("a", new Dictionary<String, Double>() { { "y", 1.0 } });
+            }
+            catch (Exception exception)
+            {
+                // assert
+                Assert.IsTrue(exception.Message.Contains("Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of"));
+                Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
+
+                return;
+            }
+
+            // assert
+            Assert.Fail("Expected an exception to be thrown.");
+        }
+
+        [TestMethod]
         public void AddTerm_WhenAddingTermWithValidCoefficientNameAndMissingIndeterminate_ShouldThrowAnArgumentOutOfRangeException()
         {
             try
@@ -105,12 +131,12 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm("a", new Dictionary<string, double>() { { "y", 1.0 } });
+                testedPolynomial.AddTerm("a", null);
             }
             catch (Exception exception)
             {
                 // assert
-                Assert.IsTrue(exception.Message.Contains("Collection of indeterminates and their degrees is not correct. Please make sure all indeterminates were declared and their degrees are in range of"));
+                Assert.IsTrue(exception.Message.Contains("No indeterminates provided."));
                 Assert.AreEqual(exception.GetType(), typeof(ArgumentOutOfRangeException), "Expected \"ArgumentOutOfRangeException\" exception.");
 
                 return;
@@ -131,7 +157,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm("a", new Dictionary<string, double>() { { "x", Consts.MinimumIndeterminateDegree - 1.0 } });
+                testedPolynomial.AddTerm("a", new Dictionary<String, Double>() { { "x", Consts.MinimumIndeterminateDegree - 1.0 } });
             }
             catch (Exception exception)
             {
@@ -157,7 +183,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm("a", new Dictionary<string, double>() { { "x", Consts.MaximumIndeterminateDegree + 1.0 } });
+                testedPolynomial.AddTerm("a", new Dictionary<String, Double>() { { "x", Consts.MaximumIndeterminateDegree + 1.0 } });
             }
             catch (Exception exception)
             {
@@ -184,11 +210,11 @@ namespace NETPolynomial.Tests.TestPolynomial
 
                 for (Int32 i = 0; i < Consts.MaximumNumberOfTerms; i++)
                 {
-                    testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", 1.0 } });
+                    testedPolynomial.AddTerm(new Dictionary<String, Double>() { { "x", 1.0 } });
                 }
 
                 // act
-                testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", 1.0 } });
+                testedPolynomial.AddTerm(new Dictionary<String, Double>() { { "x", 1.0 } });
             }
             catch (Exception exception)
             {
@@ -240,7 +266,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm(new Dictionary<string, double>() { { "y", 1.0 } });
+                testedPolynomial.AddTerm(new Dictionary<String, Double>() { { "y", 1.0 } });
             }
             catch (Exception exception)
             {
@@ -266,7 +292,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", Consts.MinimumIndeterminateDegree - 1.0 } });
+                testedPolynomial.AddTerm(new Dictionary<String, Double>() { { "x", Consts.MinimumIndeterminateDegree - 1.0 } });
             }
             catch (Exception exception)
             {
@@ -292,7 +318,7 @@ namespace NETPolynomial.Tests.TestPolynomial
                     , new String[] { "a" });
 
                 // act
-                testedPolynomial.AddTerm(new Dictionary<string, double>() { { "x", Consts.MaximumIndeterminateDegree + 1.0 } });
+                testedPolynomial.AddTerm(new Dictionary<String, Double>() { { "x", Consts.MaximumIndeterminateDegree + 1.0 } });
             }
             catch (Exception exception)
             {

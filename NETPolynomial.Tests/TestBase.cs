@@ -21,7 +21,7 @@ namespace NETPolynomial.Tests
                 null
                 , new String[] { "a" });
 
-            testedPolynomial.AddTerm("a", null);
+            testedPolynomial.AddTerm("a");
 
             return testedPolynomial;
         }
@@ -34,11 +34,10 @@ namespace NETPolynomial.Tests
 
             testedPolynomial.AddTerm(
                 "a"
-                , new Dictionary<string, double>() { { "x", 1.0 } });
+                , new Dictionary<String, Double>() { { "x", 1.0 } });
 
             testedPolynomial.AddTerm(
-                "b"
-                , null);
+                "b");
 
             return testedPolynomial;
         }
@@ -58,8 +57,7 @@ namespace NETPolynomial.Tests
                 , new Dictionary<String, Double>() { { "x", 1.0 } });
 
             testedPolynomial.AddTerm(
-                "c"
-                , null);
+                "c");
 
             return testedPolynomial;
         }
@@ -72,19 +70,18 @@ namespace NETPolynomial.Tests
 
             testedPolynomial.AddTerm(
                 "a"
-                , new Dictionary<string, double>() { { "x", 3.0 } });
+                , new Dictionary<String, Double>() { { "x", 3.0 } });
 
             testedPolynomial.AddTerm(
                 "b"
-                , new Dictionary<string, double>() { { "x", 2.0 } });
+                , new Dictionary<String, Double>() { { "x", 2.0 } });
 
             testedPolynomial.AddTerm(
                 "c"
-                , new Dictionary<string, double>() { { "x", 1.0 } });
+                , new Dictionary<String, Double>() { { "x", 1.0 } });
 
             testedPolynomial.AddTerm(
-                "d"
-                , null);
+                "d");
 
             return testedPolynomial;
         }

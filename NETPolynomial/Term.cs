@@ -38,7 +38,7 @@ namespace NETPolynomial
         internal Term(String coefficientName)
             : this(
                 coefficientName
-                , null) { }
+                , new Dictionary<String, Double>()) { }
 
         internal String CoefficientName { get; private set; }
 

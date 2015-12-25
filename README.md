@@ -1,6 +1,6 @@
 # Welcome
 
-Welcome to NETPolynomial wiki! This library is written to provide single and multivariate polynomial representation for .NET framework users. Additionally, it allows its users to evaluate polynomial values, provided that coefficients and indeterminates are defined.
+Welcome to NETPolynomial! This library is written to provide single and multivariate polynomial representation for .NET framework users. Additionally, it allows its users to evaluate polynomial values, provided that coefficients and indeterminates are defined.
 
 # What can I find in NETPolynomial?
 
@@ -195,3 +195,4 @@ If you face a situation where you have to use multiple structurally similar poly
 If you want to compare polynomials, you have two methods at your disposal: *Equals(Object obj)* and *Equals(Polynomial polynomialObject)*. The first one is just overridden .NET *Equals* and lets you compare your polynomials with virtually any object while the second one is more specialised and accepts only instances of the *Polynomial* class.
 
 Comparison is divided into three stages: comparing the structure (quadratic polynomials should not be equal to the cubic ones), comparing the values of coefficients (*2x + 3* is not *2x - 3*) and comparing values of indeterminates (*2x + 3* has different values for *x* = 1 and *x* = 2). If all of these conditions are met, polynomial are equal.
+

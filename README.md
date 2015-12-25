@@ -147,7 +147,7 @@ linearPolynomial.SetIndeterminateValue(y, 2.0);
 
 Representing more complex functions is just a matter of adding more terms, indeterminates and coefficients. Let's take a look at this graph:
 
-![graph](http://img839.imageshack.us/img839/9612/6nbi.png)
+[graph](https://www.google.pl/webhp?sourceid=chrome-instant&rlz=1C1GKLA_enPL657PL657&ion=1&espv=2&ie=UTF-8#q=z%20%3D%202*x%5E3%20%2B%2015*x*y%20%2B%204*y%5E2%20%2B%205*y%20%2B%201)
 
 Source code:
 

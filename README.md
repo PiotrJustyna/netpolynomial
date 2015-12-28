@@ -42,9 +42,9 @@ a * x^1.00 + b
 
 Now, since we have the shape of the polynomial defined, we can try to model some simple linear functions using it.
 
-#### [y = 2x + 3](https://www.google.com/?gws_rd=cr&ei=1_rHUojHJ8_Q7AajlIG4DQ#q=2*x^1+%2B+3)
+#### y = 2x + 3
 
-![graph](http://img27.imageshack.us/img27/5052/asn5.png)
+![graph](https://raw.githubusercontent.com/PiotrJustyna/netpolynomial/master/images/687474703a2f2f696d6732372e696d616765736861636b2e75732f696d6732372f353035322f61736e352e706e67.jpg)
 
 By default, all declared coefficients have value 1.0 and all declared indeterminates have value 0.0, but this can be changed any time:
 
@@ -94,9 +94,9 @@ Your polynomial: a * x^1.00 + b
 Value for argument 0.0: 3
 ```
 
-#### [y = -5x + 2](https://www.google.com/?gws_rd=cr&ei=1_rHUojHJ8_Q7AajlIG4DQ#q=%28-5%29*x^1+%2B+2)
+#### y = -5x + 2
 
-![graph](http://img13.imageshack.us/img13/7601/uno6.png)
+![graph](https://raw.githubusercontent.com/PiotrJustyna/netpolynomial/master/images/687474703a2f2f696d6731332e696d616765736861636b2e75732f696d6731332f373630312f756e6f362e706e67.jpg)
 
 Similarly, our linear polynomial can be easily transformed into this function simply by changing its coefficients:
 
@@ -112,7 +112,7 @@ linearPolynomial.SetCoefficientValue(intercept, 2.0);
 
 Multivariate polynomials can easily represent planes like this one:
 
-![graph](http://img585.imageshack.us/img585/9927/7acc.png)
+![graph](https://raw.githubusercontent.com/PiotrJustyna/netpolynomial/master/images/687474703a2f2f696d673538352e696d616765736861636b2e75732f696d673538352f393932372f376163632e706e67.jpg)
 
 Source code:
 
@@ -147,7 +147,7 @@ linearPolynomial.SetIndeterminateValue(y, 2.0);
 
 Representing more complex functions is just a matter of adding more terms, indeterminates and coefficients. Let's take a look at this graph:
 
-[graph](https://www.google.pl/webhp?sourceid=chrome-instant&rlz=1C1GKLA_enPL657PL657&ion=1&espv=2&ie=UTF-8#q=z%20%3D%202*x%5E3%20%2B%2015*x*y%20%2B%204*y%5E2%20%2B%205*y%20%2B%201)
+![graph](https://raw.githubusercontent.com/PiotrJustyna/netpolynomial/master/images/complex_surface.png)
 
 Source code:
 
